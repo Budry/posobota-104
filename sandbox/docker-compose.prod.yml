@@ -1,0 +1,26 @@
+version: '3'
+networks:
+  nginx_proxy_network:
+    external:
+      name: nginx_proxy_network
+
+services:
+  nette_sandobx:
+    image: nette-sandbox
+    networks:
+      - nginx_proxy_network
+    environment:
+      NETTE_DEBUG_SECRET: iFn2TBhcDrHyFJMW
+      VIRTUAL_HOST: posobota.zaruba-ondrej.cz
+      LETSENCRYPT_HOST: posobota.zaruba-ondrej.cz
+      LETSENCRYPT_EMAIL: zarubaondra@gmail.com
+
+  myDB:
+    networks:
+      - nginx_proxy_network
+    image: mariadb:10.1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: posobota
+    volumes:
+      - .data/mysql:/var/lib/mysql
